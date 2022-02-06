@@ -42,16 +42,16 @@ const OrderList = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell width={50}>#</TableCell>
-                      <TableCell width={50}>اسم المنتج</TableCell>
-                      <TableCell width={50}>قوي</TableCell>
-                      <TableCell width={50}>وصف</TableCell>
-                      <TableCell width={50}>السعر</TableCell>
-                      <TableCell width={50}>كمية</TableCell>
-                      <TableCell width={50}>نوع الشحن</TableCell>
-                      <TableCell width={50}>هوية الزبون</TableCell>
-                      <TableCell width={50}>السعر الكلي</TableCell>
-                      <TableCell width={50}>دفع</TableCell>
-                      <TableCell width={50}>الباركود</TableCell>
+                      <TableCell width={100}>اسم المنتج</TableCell>
+                      <TableCell width={100}>قوي</TableCell>
+                      <TableCell width={100}>وصف</TableCell>
+                      <TableCell width={100}>السعر</TableCell>
+                      <TableCell width={100}>كمية</TableCell>
+                      <TableCell width={100}>نوع الشحن</TableCell>
+                      <TableCell width={100}>هوية الزبون</TableCell>
+                      <TableCell width={100}>السعر الكلي</TableCell>
+                      <TableCell width={100}>دفع</TableCell>
+                      <TableCell width={100}>الباركود</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -74,7 +74,9 @@ const OrderList = () => {
                           <TableCell>{shelf.shipment_type}</TableCell>
                           <TableCell>{shelf.customer_id}</TableCell>
                           <TableCell>{shelf.total_price}</TableCell>
-                          <TableCell>{shelf.paid}</TableCell>
+                          <TableCell>
+                            {shelf.paid === 1 ? 'paid' : 'unpaid'}
+                          </TableCell>
                           <TableCell>{shelf.barcode}</TableCell>
                         </TableRow>
                       ))}

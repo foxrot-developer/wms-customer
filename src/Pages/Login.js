@@ -14,7 +14,7 @@ const Login = () => {
               background: '#3751ff',
             }}
           >
-            <h1 className='pt-3 pb-3'>CUSTOMER LOGIN</h1>
+            <h1 className='pt-3 pb-3'>تسجيل دخول العميل</h1>
           </div>
           <div className='col-xs-12 col-md-6 p-5'>
             <LoginForm />
