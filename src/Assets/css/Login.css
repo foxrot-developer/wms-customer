@@ -1,0 +1,11 @@
+.main-login {
+  height: 100vh;
+}
+
+.bg {
+  background-color: var(--bgcolor);
+}
+
+.bg h1 {
+  color: #fff;
+}
