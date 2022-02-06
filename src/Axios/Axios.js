@@ -1,19 +1,17 @@
 import axios from 'axios';
 
 const Axios = axios.create({
-    baseURL: 'http://localhost:5000/api/',
+  baseURL: 'https://wmsss.herokuapp.com/api/',
 });
 
 Axios.interceptors.request.use((request) => {
-    // document.querySelector('.overlay').style.display = 'flex';
-    return request;
+  // document.querySelector('.overlay').style.display = 'flex';
+  return request;
 });
 
-Axios.interceptors.response.use(
-    (response) => {
-        // document.querySelector('.overlay').style.display = 'none';
-        return response;
-    }
-);
+Axios.interceptors.response.use((response) => {
+  // document.querySelector('.overlay').style.display = 'none';
+  return response;
+});
 
 export default Axios;

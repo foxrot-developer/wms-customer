@@ -1,5 +1,10 @@
 :root {
-  --bgcolor: #3751ff;
+  --blue: #3751ff;
+  --hover-blue: #0f67be;
+  --white: #ffffff;
+  --light-grey: rgb(224, 224, 224);
+
+  --b-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 body {
