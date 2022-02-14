@@ -39,17 +39,19 @@ export const customerOrderList = (userId) => (dispatch) => {
     });
 };
 
-export const transferProductWarehouse = (data) => (dispatch) => {
-  Axios.post('warehouse/request', data)
-    .then((response) => {
-      Toast.success(response.data.message);
-      dispatch(customerOrderList());
-    })
-    .catch((error) => {
-      console.log(error);
-      Toast.error(error.response.data.message);
-    });
-};
+export const transferProductWarehouse =
+  (data, id, setTransferModal) => (dispatch) => {
+    Axios.post('warehouse/request', data)
+      .then((response) => {
+        Toast.success(response.data.message);
+        dispatch(customerOrderList(id));
+        setTransferModal(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        Toast.error(error.response.data.message);
+      });
+  };
 
 export const customerExpiredList = (userId) => (dispatch) => {
   Axios.post(`user/user-expired/${userId}`, {

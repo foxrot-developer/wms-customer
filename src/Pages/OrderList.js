@@ -46,7 +46,7 @@ const OrderList = () => {
     order_id: '',
     from_warehouse: '',
     to_warehouse: '',
-    approve: 0,
+    approved: 0,
   });
 
   const formatDateAndTimeString = (date) => {
@@ -82,6 +82,7 @@ const OrderList = () => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
+                  disabled
                   fullWidth
                   variant='outlined'
                   label='من المستودع'
@@ -117,7 +118,13 @@ const OrderList = () => {
               <Grid item xs={12}>
                 <Button
                   onClick={() => {
-                    dispatch(transferProductWarehouse(transferWarehouse));
+                    dispatch(
+                      transferProductWarehouse(
+                        transferWarehouse,
+                        customer.id,
+                        setTransferModal
+                      )
+                    );
                   }}
                   variant='contained'
                 >
@@ -215,7 +222,7 @@ const OrderList = () => {
                                   order_id: shelf.id,
                                   from_warehouse: shelf.warehouse_id,
                                   to_warehouse: '',
-                                  approve: 0,
+                                  approved: 0,
                                 });
                                 setTransferModal(true);
                               }}
