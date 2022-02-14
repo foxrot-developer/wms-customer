@@ -46,6 +46,7 @@ const OrderList = () => {
     order_id: '',
     from_warehouse: '',
     to_warehouse: '',
+    approve: 0,
   });
 
   const formatDateAndTimeString = (date) => {
@@ -214,6 +215,7 @@ const OrderList = () => {
                                   order_id: shelf.id,
                                   from_warehouse: shelf.warehouse_id,
                                   to_warehouse: '',
+                                  approve: 0,
                                 });
                                 setTransferModal(true);
                               }}
