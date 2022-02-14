@@ -5,6 +5,7 @@ const initialState = {
   isLoggedin: false,
   orderList: [],
   expiredList: [],
+  warehouse: [],
 };
 
 const CustomerReducer = (state = initialState, action) => {
@@ -30,6 +31,12 @@ const CustomerReducer = (state = initialState, action) => {
       return {
         ...state,
         expiredList: action.payload,
+      };
+
+    case actionTypes.GET_ALL_WAREHOUSE:
+      return {
+        ...state,
+        warehouse: action.payload,
       };
 
     default:

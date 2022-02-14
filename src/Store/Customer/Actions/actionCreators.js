@@ -39,6 +39,18 @@ export const customerOrderList = (userId) => (dispatch) => {
     });
 };
 
+export const transferProductWarehouse = (data) => (dispatch) => {
+  Axios.post('warehouse/request', data)
+    .then((response) => {
+      Toast.success(response.data.message);
+      dispatch(customerOrderList());
+    })
+    .catch((error) => {
+      console.log(error);
+      Toast.error(error.response.data.message);
+    });
+};
+
 export const customerExpiredList = (userId) => (dispatch) => {
   Axios.post(`user/user-expired/${userId}`, {
     today_date: formatDateToString(new Date()),
@@ -55,6 +67,18 @@ export const customerExpiredList = (userId) => (dispatch) => {
     });
 };
 
+export const getAllWarehouse = () => (dispatch) => {
+  Axios.get('warehouse/all-warehouses')
+    .then((res) => {
+      dispatch({
+        type: actionTypes.GET_ALL_WAREHOUSE,
+        payload: res.data.warehouses,
+      });
+    })
+    .catch((err) => {
+      Toast.error(err.response.data.message);
+    });
+};
 function formatDateToString(date) {
   var dd = (date.getDate() < 10 ? '0' : '') + date.getDate();
 
