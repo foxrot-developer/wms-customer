@@ -102,6 +102,14 @@ const SideBar = () => {
                 قائمة المنتجات
               </li>
             </NavLink>
+            <NavLink to='/inovices' activeClassName='active'>
+              <li>
+                <span>
+                  <ProductionQuantityLimitsIcon />
+                </span>
+                دفع
+              </li>
+            </NavLink>
           </ul>
         </SidebarMenu>
         <SidebarBottom>

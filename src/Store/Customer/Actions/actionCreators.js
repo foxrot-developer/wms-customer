@@ -101,3 +101,19 @@ function formatDateToString(date) {
 
   return `${date.getFullYear()}-${MM}-${dd}`;
 }
+
+export const getCustomerInvoice = (id) => (dispatch) => {
+  Axios.post('product/calculate-price', {
+    customer_id: id,
+  })
+    .then((response) => {
+      dispatch({
+        type: actionTypes.GET_CUSTOMER_INVOICE,
+        payload: response.data,
+      });
+    })
+    .catch((error) => {
+      console.log(error.response.data.message);
+      Toast.error(error.response.data.message);
+    });
+};

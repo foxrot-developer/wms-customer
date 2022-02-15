@@ -6,6 +6,8 @@ const initialState = {
   orderList: [],
   expiredList: [],
   warehouse: [],
+
+  invoice: {},
 };
 
 const CustomerReducer = (state = initialState, action) => {
@@ -39,6 +41,11 @@ const CustomerReducer = (state = initialState, action) => {
         warehouse: action.payload,
       };
 
+    case actionTypes.GET_CUSTOMER_INVOICE:
+      return {
+        ...state,
+        invoice: action.payload,
+      };
     default:
       return state;
   }

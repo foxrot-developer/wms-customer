@@ -20,6 +20,11 @@ export const ContentArea = () => {
               title='منتجات منتهية الصلاحية'
               link='/expired-list'
             />
+            <StatsCard
+              icon={<ProductionQuantityLimitsIcon />}
+              title='دفع'
+              link='/inovices'
+            />
           </Row>
         </Container>
       </Main>

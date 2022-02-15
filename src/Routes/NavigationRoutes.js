@@ -4,6 +4,7 @@ import Login from '../Pages/Login';
 import Dashboard from '../Pages/Dashboard';
 import OrderList from '../Pages/OrderList';
 import ExpiredProduct from '../Pages/ExpiredProduct';
+import Invoice from '../Pages/Invoice';
 
 const NavigationRoutes = () => {
   return (
@@ -12,6 +13,7 @@ const NavigationRoutes = () => {
       <Route exact path='/dashboard' element={<Dashboard />} />
       <Route exact path='/orders-list' element={<OrderList />} />
       <Route exact path='/expired-list' element={<ExpiredProduct />} />
+      <Route path='inovices' element={<Invoice />} />
       <Route path='*' element={<Navigate to='/' />} />
     </Routes>
   );
