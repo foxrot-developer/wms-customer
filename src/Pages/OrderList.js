@@ -50,13 +50,19 @@ const OrderList = () => {
   const [transferModal, setTransferModal] = useState(false);
   const [transferWarehouse, setTransferWarehouse] = useState({
     order_id: '',
-    transfer_date_time: '',
+    transfer_date_time: {
+      date: '',
+      time: '',
+    },
   });
 
   const [withdrawModal, setWithdrawModal] = useState(false);
   const [withdrawWarehouse, setWithdrawWarehouse] = useState({
     order_id: '',
-    withdraw_date_time: '',
+    withdraw_date_time: {
+      date: '',
+      time: '',
+    },
   });
 
   const formatDateAndTimeString = (date) => {
@@ -97,12 +103,33 @@ const OrderList = () => {
                   type='date'
                   fullWidth
                   variant='outlined'
-                  label='وقت تاريخ التحويل'
-                  value={transferWarehouse.transfer_date_time}
+                  label='تاريخ'
+                  value={transferWarehouse.transfer_date_time.date}
                   onChange={(e) =>
                     setTransferWarehouse({
                       ...transferWarehouse,
-                      transfer_date_time: e.target.value,
+                      transfer_date_time: {
+                        ...transferWarehouse.transfer_date_time,
+                        date: e.target.value,
+                      },
+                    })
+                  }
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  variant='outlined'
+                  label='وقت'
+                  type='time'
+                  value={transferWarehouse.transfer_date_time.time}
+                  onChange={(e) =>
+                    setTransferWarehouse({
+                      ...transferWarehouse,
+                      transfer_date_time: {
+                        ...transferWarehouse.transfer_date_time,
+                        time: e.target.value,
+                      },
                     })
                   }
                 />
@@ -114,9 +141,10 @@ const OrderList = () => {
                       transferProductWarehouse(
                         {
                           ...transferWarehouse,
-                          transfer_date_time: formatDateAndTimeString(
-                            new Date(transferWarehouse.transfer_date_time)
-                          ),
+                          transfer_date_time:
+                            transferWarehouse.transfer_date_time.date +
+                            ' ' +
+                            transferWarehouse.transfer_date_time.time,
                         },
                         customer.id,
                         setTransferModal
@@ -147,12 +175,33 @@ const OrderList = () => {
                   type='date'
                   fullWidth
                   variant='outlined'
-                  label='وقت تاريخ التحويل'
-                  value={withdrawWarehouse.withdraw_date_time}
+                  label='تاريخ'
+                  value={withdrawWarehouse.withdraw_date_time.date}
                   onChange={(e) =>
                     setWithdrawWarehouse({
                       ...withdrawWarehouse,
-                      withdraw_date_time: e.target.value,
+                      withdraw_date_time: {
+                        ...withdrawWarehouse.withdraw_date_time,
+                        date: e.target.value,
+                      },
+                    })
+                  }
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  variant='outlined'
+                  label='وقت'
+                  type='time'
+                  value={withdrawWarehouse.withdraw_date_time.time}
+                  onChange={(e) =>
+                    setWithdrawWarehouse({
+                      ...withdrawWarehouse,
+                      withdraw_date_time: {
+                        ...withdrawWarehouse.withdraw_date_time,
+                        time: e.target.value,
+                      },
                     })
                   }
                 />
@@ -187,9 +236,10 @@ const OrderList = () => {
                       transferWithDraw(
                         {
                           order_id: withdrawWarehouse.order_id,
-                          withdraw_date_time: formatDateAndTimeString(
-                            new Date(withdrawWarehouse.withdraw_date_time)
-                          ),
+                          withdraw_date_time:
+                            withdrawWarehouse.withdraw_date_time.date +
+                            ' ' +
+                            withdrawWarehouse.withdraw_date_time.time,
                         },
                         customer.id,
                         setWithdrawModal
