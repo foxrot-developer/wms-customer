@@ -53,6 +53,19 @@ export const transferProductWarehouse =
       });
   };
 
+export const transferWithDraw = (data, id, setTransferModal) => (dispatch) => {
+  Axios.post('product/withdraw-request', data)
+    .then((response) => {
+      Toast.success(response.data.message);
+      dispatch(customerOrderList(id));
+      setTransferModal(false);
+    })
+    .catch((error) => {
+      console.log(error);
+      Toast.error(error.response.data.message);
+    });
+};
+
 export const customerExpiredList = (userId) => (dispatch) => {
   Axios.post(`user/user-expired/${userId}`, {
     today_date: formatDateToString(new Date()),

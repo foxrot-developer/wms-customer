@@ -1,6 +1,8 @@
 import {
   Button,
+  Checkbox,
   FormControl,
+  FormControlLabel,
   Grid,
   IconButton,
   InputLabel,
@@ -15,6 +17,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,9 +34,12 @@ import {
   customerOrderList,
   getAllWarehouse,
   transferProductWarehouse,
+  transferWithDraw,
 } from '../Store/Customer/Actions/actionCreators';
 import CloseIcon from '@mui/icons-material/Close';
 import TransferWithinAStationIcon from '@mui/icons-material/TransferWithinAStation';
+import UndoIcon from '@mui/icons-material/Undo';
+import SignatureCanvas from 'react-signature-canvas';
 
 const OrderList = () => {
   const dispatch = useDispatch();
@@ -44,9 +50,13 @@ const OrderList = () => {
   const [transferModal, setTransferModal] = useState(false);
   const [transferWarehouse, setTransferWarehouse] = useState({
     order_id: '',
-    from_warehouse: '',
-    to_warehouse: '',
-    approved: 0,
+    transfer_date_time: '',
+  });
+
+  const [withdrawModal, setWithdrawModal] = useState(false);
+  const [withdrawWarehouse, setWithdrawWarehouse] = useState({
+    order_id: '',
+    withdraw_date_time: '',
   });
 
   const formatDateAndTimeString = (date) => {
@@ -60,6 +70,8 @@ const OrderList = () => {
       (date.getSeconds() < 10 ? '0' : '') + date.getSeconds()
     }`;
   };
+
+  const [isAccept, setIsAccept] = useState(false);
 
   useEffect(() => {
     if (customer.id) {
@@ -82,47 +94,105 @@ const OrderList = () => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  disabled
+                  type='date'
                   fullWidth
                   variant='outlined'
-                  label='من المستودع'
-                  value={
-                    warehouse.find(
-                      (item) => item.id === transferWarehouse.from_warehouse
-                    )?.name
+                  label='وقت تاريخ التحويل'
+                  value={transferWarehouse.transfer_date_time}
+                  onChange={(e) =>
+                    setTransferWarehouse({
+                      ...transferWarehouse,
+                      transfer_date_time: e.target.value,
+                    })
                   }
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel id='warehouse_idTo'>إلى المستودع</InputLabel>
-                  <Select
-                    fullWidth
-                    labelId='مستودع'
-                    id='warehouse_idTo'
-                    value={transferWarehouse.to_warehouse}
-                    onChange={(e) =>
-                      setTransferWarehouse({
-                        ...transferWarehouse,
-                        to_warehouse: e.target.value,
-                      })
-                    }
-                  >
-                    {warehouse !== undefined &&
-                      warehouse.map((item) => (
-                        <MenuItem value={item.id}>{item.name}</MenuItem>
-                      ))}
-                  </Select>
-                </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <Button
                   onClick={() => {
                     dispatch(
                       transferProductWarehouse(
-                        transferWarehouse,
+                        {
+                          ...transferWarehouse,
+                          transfer_date_time: formatDateAndTimeString(
+                            new Date(transferWarehouse.transfer_date_time)
+                          ),
+                        },
                         customer.id,
                         setTransferModal
+                      )
+                    );
+                  }}
+                  variant='contained'
+                >
+                  نقل
+                </Button>
+              </Grid>
+            </Grid>
+          </ModalContent>
+        </ModalContainer>
+      </Modal>
+      <Modal open={withdrawModal}>
+        <ModalContainer>
+          <ModalContent width='30%'>
+            <HeaderContainer>
+              <Header>انسحب</Header>
+              <IconButton onClick={() => setWithdrawModal(false)}>
+                <CloseIcon />
+              </IconButton>
+            </HeaderContainer>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  type='date'
+                  fullWidth
+                  variant='outlined'
+                  label='وقت تاريخ التحويل'
+                  value={withdrawWarehouse.withdraw_date_time}
+                  onChange={(e) =>
+                    setWithdrawWarehouse({
+                      ...withdrawWarehouse,
+                      withdraw_date_time: e.target.value,
+                    })
+                  }
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant='h6'>إمضاء</Typography>
+                <SignatureCanvas
+                  penColor='black'
+                  canvasProps={{
+                    width: 500,
+                    height: 200,
+                    className: 'sigCanvas',
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      value={isAccept}
+                      onChange={(e) => setIsAccept(e.target.checked)}
+                    />
+                  }
+                  label='قبول مع الشروط والأحكام'
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  disabled={!isAccept}
+                  onClick={() => {
+                    dispatch(
+                      transferWithDraw(
+                        {
+                          order_id: withdrawWarehouse.order_id,
+                          withdraw_date_time: formatDateAndTimeString(
+                            new Date(withdrawWarehouse.withdraw_date_time)
+                          ),
+                        },
+                        customer.id,
+                        setWithdrawModal
                       )
                     );
                   }}
@@ -219,15 +289,24 @@ const OrderList = () => {
                             <IconButton
                               onClick={() => {
                                 setTransferWarehouse({
+                                  ...transferWarehouse,
                                   order_id: shelf.id,
-                                  from_warehouse: shelf.warehouse_id,
-                                  to_warehouse: '',
-                                  approved: 0,
                                 });
                                 setTransferModal(true);
                               }}
                             >
                               <TransferWithinAStationIcon />
+                            </IconButton>
+                            <IconButton
+                              onClick={() => {
+                                setWithdrawWarehouse({
+                                  ...withdrawWarehouse,
+                                  order_id: shelf.id,
+                                });
+                                setWithdrawModal(true);
+                              }}
+                            >
+                              <UndoIcon />
                             </IconButton>
                           </TableCell>
                         </TableRow>
