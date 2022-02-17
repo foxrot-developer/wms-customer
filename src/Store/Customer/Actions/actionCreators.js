@@ -28,9 +28,10 @@ export const customerLogout = (navigate) => (dispatch) => {
 export const customerOrderList = (userId) => (dispatch) => {
   Axios.get(`user/user-orders/${userId}`)
     .then((response) => {
+      var data = [...response.data.shelf_orders, ...response.data.others];
       dispatch({
         type: actionTypes.CUSTOMER_ORDER_LIST,
-        payload: response.data.response,
+        payload: data,
       });
     })
     .catch((error) => {

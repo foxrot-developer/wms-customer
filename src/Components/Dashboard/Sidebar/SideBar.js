@@ -13,15 +13,27 @@ import {
   ModalContainer,
   ModalContent,
 } from '../../Global/GlobalStyle';
-import { IconButton, Modal, TextField, Grid } from '@mui/material';
+import {
+  IconButton,
+  Modal,
+  TextField,
+  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@mui/material';
 import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
 import userImg from '../../../Assets/images/user.jpeg';
 import { useSelector } from 'react-redux';
 import CloseIcon from '@mui/icons-material/Close';
+import i18next from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 const SideBar = () => {
+  const { t } = useTranslation();
   const customer = useSelector((state) => state.customer.customer);
   const { name, email, username } = customer;
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +43,7 @@ const SideBar = () => {
         <ModalContainer>
           <ModalContent>
             <HeaderContainer>
-              <Header>الملف الشخصي</Header>
+              <Header>{t('Profile')}</Header>
               <IconButton onClick={() => setIsOpen(false)}>
                 <CloseIcon />
               </IconButton>
@@ -39,7 +51,7 @@ const SideBar = () => {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
-                  label='الجرف'
+                  label={t('name')}
                   variant='outlined'
                   fullWidth
                   value={name}
@@ -48,7 +60,7 @@ const SideBar = () => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  label='البريد الإلكتروني'
+                  label={t('email')}
                   variant='outlined'
                   fullWidth
                   value={email}
@@ -57,7 +69,7 @@ const SideBar = () => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  label='اسم المستخدم'
+                  label={t('username')}
                   variant='outlined'
                   fullWidth
                   value={username}
@@ -70,11 +82,18 @@ const SideBar = () => {
       </Modal>
       <AdSidebar>
         <SidebarTop>
-          <div className='logo'>
-            <NavLink to='/dashboard' className='text-decoration-none'>
-              <h4>متجري</h4>
-            </NavLink>
-          </div>
+          <FormControl fullWidth className='form-control'>
+            <InputLabel htmlFor='language'>{t('Language')}</InputLabel>
+            <Select
+              id='language'
+              onChange={(e) => {
+                i18next.changeLanguage(e.target.value);
+              }}
+            >
+              <MenuItem value='en'>English</MenuItem>
+              <MenuItem value='ar'>Arabic</MenuItem>
+            </Select>
+          </FormControl>
         </SidebarTop>
         <SidebarMenu>
           <ul>
@@ -83,7 +102,7 @@ const SideBar = () => {
                 <span>
                   <WidgetsOutlinedIcon />
                 </span>
-                لوحة القيادة
+                <span>{t('dashboard')}</span>
               </li>
             </NavLink>
             <NavLink to='/orders-list' activeClassName='active'>
@@ -91,7 +110,7 @@ const SideBar = () => {
                 <span>
                   <ShoppingBagOutlinedIcon />
                 </span>
-                ائحة الطلبات
+                <span>{t('orderList')}</span>
               </li>
             </NavLink>
             <NavLink to='/expired-list' activeClassName='active'>
@@ -99,7 +118,7 @@ const SideBar = () => {
                 <span>
                   <ProductionQuantityLimitsIcon />
                 </span>
-                قائمة المنتجات
+                <span>{t('ProductsExpiry')}</span>
               </li>
             </NavLink>
             <NavLink to='/inovices' activeClassName='active'>
@@ -107,7 +126,7 @@ const SideBar = () => {
                 <span>
                   <ProductionQuantityLimitsIcon />
                 </span>
-                دفع
+                <span>{t('invoice')}</span>
               </li>
             </NavLink>
           </ul>

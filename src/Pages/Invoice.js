@@ -18,8 +18,10 @@ import {
   InnerConatiner,
 } from '../Components/Global/GlobalStyle';
 import { getCustomerInvoice } from '../Store/Customer/Actions/actionCreators';
+import { useTranslation } from 'react-i18next';
 
 const Invoice = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const invoice = useSelector((state) => state.customer.invoice);
   const customer = useSelector((state) => state.customer.customer);
@@ -34,21 +36,21 @@ const Invoice = () => {
           <div className='container p-md-5 '>
             <div className='row'>
               <div className='col-6'>
-                <h2>فاتورة</h2>
+                <h2>{t('invoice')}</h2>
               </div>
             </div>
 
             <div className='row'>
               <div className='col-6'>
-                <Header>دفع</Header>
+                <Header>{t('paid')}</Header>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 450 }} aria-label='simple table'>
                     <TableHead>
                       <TableCell scope='col'>#</TableCell>
-                      <TableCell scope='col'>اسم المنتج</TableCell>
-                      <TableCell scope='col'>كمية</TableCell>
-                      <TableCell scope='col'>السعر الكلي</TableCell>
-                      <TableCell scope='col'>اسم</TableCell>
+                      <TableCell scope='col'>{t('productName')}</TableCell>
+                      <TableCell scope='col'>{t('quantity')}</TableCell>
+                      <TableCell scope='col'>{t('totalprice')}</TableCell>
+                      <TableCell scope='col'>{t('name')}</TableCell>
                     </TableHead>
                     <TableBody>
                       {invoice !== undefined &&
@@ -73,18 +75,20 @@ const Invoice = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
-                <Header>مجموع: {invoice?.paid?.total[0].total_amount}</Header>
+                <Header>
+                  {t('Total')}: {invoice?.paid?.total[0].total_amount}
+                </Header>
               </div>
               <div className='col-6'>
-                <Header>غير مدفوع الأجر</Header>
+                <Header>{t('unPaid')}</Header>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 450 }} aria-label='simple table'>
                     <TableHead>
                       <TableCell scope='col'>#</TableCell>
-                      <TableCell scope='col'>اسم المنتج</TableCell>
-                      <TableCell scope='col'>كمية</TableCell>
-                      <TableCell scope='col'>السعر الكلي</TableCell>
-                      <TableCell scope='col'>اسم</TableCell>
+                      <TableCell scope='col'>{t('productName')}</TableCell>
+                      <TableCell scope='col'>{t('quantity')}</TableCell>
+                      <TableCell scope='col'>{t('totalprice')}</TableCell>
+                      <TableCell scope='col'>{t('name')}</TableCell>
                     </TableHead>
                     <TableBody>
                       {invoice !== undefined &&
@@ -109,7 +113,9 @@ const Invoice = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
-                <Header>مجموع: {invoice?.unpaid?.total[0].total_amount}</Header>
+                <Header>
+                  {t('Total')}: {invoice?.unpaid?.total[0].total_amount}
+                </Header>
               </div>
             </div>
           </div>

@@ -10,6 +10,7 @@ import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
+import './i18Next';
 import CustomerReducer from './Store/Customer/Reducers/customerReducer';
 
 const { persistStore, persistReducer } = require('redux-persist');
@@ -22,10 +23,9 @@ let devtools, store;
 const isClient = typeof window !== 'undefined';
 
 if (isClient) {
-  devtools =
-    window.__REDUX_DEVTOOLS_EXTENSION__
-      ? window.__REDUX_DEVTOOLS_EXTENSION__()
-      : (f) => f;
+  devtools = window.__REDUX_DEVTOOLS_EXTENSION__
+    ? window.__REDUX_DEVTOOLS_EXTENSION__()
+    : (f) => f;
 
   const storage = require('redux-persist/lib/storage').default;
   const persistConfig = {

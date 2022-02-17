@@ -29,6 +29,7 @@ import {
   ModalContainer,
   ModalContent,
   HeaderContainer,
+  InnerConatiner,
 } from '../Components/Global/GlobalStyle';
 import {
   customerOrderList,
@@ -40,11 +41,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import TransferWithinAStationIcon from '@mui/icons-material/TransferWithinAStation';
 import UndoIcon from '@mui/icons-material/Undo';
 import SignatureCanvas from 'react-signature-canvas';
+import { useTranslation } from 'react-i18next';
 
 const OrderList = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const orderList = useSelector((state) => state.customer.orderList);
-  const warehouse = useSelector((state) => state.customer.warehouse);
   const customer = useSelector((state) => state.customer.customer);
 
   const [transferModal, setTransferModal] = useState(false);
@@ -63,7 +65,11 @@ const OrderList = () => {
       date: '',
       time: '',
     },
+    quantity: '',
+    tempQuantity: 0,
   });
+
+  console.log(withdrawWarehouse);
 
   const formatDateAndTimeString = (date) => {
     var dd = (date.getDate() < 10 ? '0' : '') + date.getDate();
@@ -92,7 +98,7 @@ const OrderList = () => {
         <ModalContainer>
           <ModalContent>
             <HeaderContainer>
-              <Header>نقل المستودع</Header>
+              <Header>{t('transfer')}</Header>
               <IconButton onClick={() => setTransferModal(false)}>
                 <CloseIcon />
               </IconButton>
@@ -103,7 +109,7 @@ const OrderList = () => {
                   type='date'
                   fullWidth
                   variant='outlined'
-                  label='تاريخ'
+                  label={t('date')}
                   value={transferWarehouse.transfer_date_time.date}
                   onChange={(e) =>
                     setTransferWarehouse({
@@ -120,7 +126,7 @@ const OrderList = () => {
                 <TextField
                   fullWidth
                   variant='outlined'
-                  label='وقت'
+                  label={t('time')}
                   type='time'
                   value={transferWarehouse.transfer_date_time.time}
                   onChange={(e) =>
@@ -153,7 +159,7 @@ const OrderList = () => {
                   }}
                   variant='contained'
                 >
-                  نقل
+                  {t('transfer')}
                 </Button>
               </Grid>
             </Grid>
@@ -164,7 +170,7 @@ const OrderList = () => {
         <ModalContainer>
           <ModalContent width='30%'>
             <HeaderContainer>
-              <Header>انسحب</Header>
+              <Header>{t('Withdrawalrequest')}</Header>
               <IconButton onClick={() => setWithdrawModal(false)}>
                 <CloseIcon />
               </IconButton>
@@ -175,7 +181,7 @@ const OrderList = () => {
                   type='date'
                   fullWidth
                   variant='outlined'
-                  label='تاريخ'
+                  label={t('date')}
                   value={withdrawWarehouse.withdraw_date_time.date}
                   onChange={(e) =>
                     setWithdrawWarehouse({
@@ -192,7 +198,7 @@ const OrderList = () => {
                 <TextField
                   fullWidth
                   variant='outlined'
-                  label='وقت'
+                  label={t('time')}
                   type='time'
                   value={withdrawWarehouse.withdraw_date_time.time}
                   onChange={(e) =>
@@ -207,7 +213,30 @@ const OrderList = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant='h6'>إمضاء</Typography>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor='quantity'>{t('quantity')}</InputLabel>
+                  <Select
+                    id='quantity'
+                    onChange={(e) => {
+                      setWithdrawWarehouse({
+                        ...withdrawWarehouse,
+                        quantity: e.target.value,
+                      });
+                    }}
+                  >
+                    {withdrawWarehouse.tempQuantity > 0 &&
+                      Array(withdrawWarehouse.tempQuantity)
+                        .fill()
+                        .map((_, index) => (
+                          <MenuItem key={index} value={index + 1}>
+                            {index + 1}
+                          </MenuItem>
+                        ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant='h6'>{t('signature')}</Typography>
                 <SignatureCanvas
                   penColor='black'
                   canvasProps={{
@@ -225,7 +254,7 @@ const OrderList = () => {
                       onChange={(e) => setIsAccept(e.target.checked)}
                     />
                   }
-                  label='قبول مع الشروط والأحكام'
+                  label={t('termsconditions')}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -240,6 +269,7 @@ const OrderList = () => {
                             withdrawWarehouse.withdraw_date_time.date +
                             ' ' +
                             withdrawWarehouse.withdraw_date_time.time,
+                          quantity: withdrawWarehouse.quantity,
                         },
                         customer.id,
                         setWithdrawModal
@@ -248,7 +278,7 @@ const OrderList = () => {
                   }}
                   variant='contained'
                 >
-                  نقل
+                  {t('withdrawal')}
                 </Button>
               </Grid>
             </Grid>
@@ -257,116 +287,110 @@ const OrderList = () => {
       </Modal>
       <ContentWrap>
         <SideBar />
-        <div className='container p-md-5 '>
-          <div className='row'>
-            <div className='col-12'>
-              <Header>ائحة الطلبات</Header>
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 450 }} aria-label='simple table'>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell width={50}>#</TableCell>
-                      <TableCell width={50}>معرف المنتج</TableCell>
-                      <TableCell width={50}>الجرف</TableCell>
-                      <TableCell width={50}>قوي</TableCell>
-                      <TableCell width={50}>كمية</TableCell>
-                      <TableCell width={50}>اسم الزبون</TableCell>
-                      <TableCell width={50}>السعر الكلي</TableCell>
-                      <TableCell width={50}>دفع</TableCell>
-                      <TableCell width={50}>الباركود</TableCell>
-                      <TableCell width={50}>مستودع</TableCell>
-                      <TableCell width={50}>طلب معرف</TableCell>
-                      <TableCell width={50}>أنشئت في</TableCell>
-                      <TableCell width={50}>تاريخ الانتهاء</TableCell>
-                      <TableCell width={50}>وقت تسجيل الوصول</TableCell>
-                      <TableCell width={50}>تحقق من الوقت</TableCell>
-                      <TableCell align='center' width={50}>
-                        عدد
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {orderList !== undefined &&
-                      orderList.map((shelf, index) => (
-                        <TableRow
-                          key={index}
-                          sx={{
-                            '&:last-child td, &:last-child th': { border: 0 },
-                          }}
-                        >
-                          <TableCell component='th' scope='row'>
-                            {index + 1}
-                          </TableCell>
-                          <TableCell>{shelf.product_id}</TableCell>
-                          <TableCell>{shelf.shelf_id}</TableCell>
-                          <TableCell>{shelf.storage_type}</TableCell>
-                          <TableCell>{shelf.quantity}</TableCell>
-                          <TableCell>{customer.name}</TableCell>
-                          <TableCell>{shelf.total_price}</TableCell>
-                          <TableCell>
-                            {shelf.paid === 1 ? 'Paid' : 'UnPaid'}
-                          </TableCell>
-                          <TableCell>{shelf.barcode}</TableCell>
-                          <TableCell>
-                            {
-                              warehouse.find(
-                                (item) => item.id === shelf.warehouse_id
-                              )?.name
-                            }
-                          </TableCell>
-                          <TableCell>{shelf.request_id}</TableCell>
-                          <TableCell>
-                            {formatDateAndTimeString(
-                              new Date(shelf.created_at)
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            {formatDateAndTimeString(
-                              new Date(shelf.expiry_date)
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            {formatDateAndTimeString(
-                              new Date(shelf.checkin_time)
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            {formatDateAndTimeString(
-                              new Date(shelf.checkout_time)
-                            )}
-                          </TableCell>
-                          <TableCell align='center'>
-                            <IconButton
-                              onClick={() => {
-                                setTransferWarehouse({
-                                  ...transferWarehouse,
-                                  order_id: shelf.id,
-                                });
-                                setTransferModal(true);
-                              }}
-                            >
-                              <TransferWithinAStationIcon />
-                            </IconButton>
-                            <IconButton
-                              onClick={() => {
-                                setWithdrawWarehouse({
-                                  ...withdrawWarehouse,
-                                  order_id: shelf.id,
-                                });
-                                setWithdrawModal(true);
-                              }}
-                            >
-                              <UndoIcon />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+        <InnerConatiner>
+          <div className='container p-md-5 '>
+            <div className='row'>
+              <div className='col-12'>
+                <Header>{t('orderList')}</Header>
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 450 }} aria-label='simple table'>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell width={50}>#</TableCell>
+                        <TableCell width={50}>{t('productName')}</TableCell>
+                        <TableCell width={50}>{t('shelfNumber')}</TableCell>
+                        <TableCell width={50}>{t('storageType')}</TableCell>
+                        <TableCell width={50}>{t('quantity')}</TableCell>
+                        <TableCell width={50}>{t('customerName')}</TableCell>
+                        <TableCell width={50}>{t('totalprice')}</TableCell>
+                        <TableCell width={50}>{t('Pay')}</TableCell>
+                        <TableCell width={50}>{t('barcode')}</TableCell>
+                        <TableCell width={50}>{t('createdAt')}</TableCell>
+                        <TableCell width={50}>{t('ExpiryDate')}</TableCell>
+                        <TableCell width={50}>{t('checkedInTime')}</TableCell>
+                        <TableCell width={50}>{t('checkOutTime')}</TableCell>
+                        <TableCell align='center' width={50}>
+                          {t('action')}
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {orderList !== undefined &&
+                        orderList.map((shelf, index) => (
+                          <TableRow
+                            key={index}
+                            sx={{
+                              '&:last-child td, &:last-child th': { border: 0 },
+                            }}
+                          >
+                            <TableCell component='th' scope='row'>
+                              {index + 1}
+                            </TableCell>
+                            <TableCell>{shelf.product_name}</TableCell>
+                            <TableCell>{shelf.shelf_number}</TableCell>
+                            <TableCell>{shelf.storage_type}</TableCell>
+                            <TableCell>{shelf.quantity}</TableCell>
+                            <TableCell>{customer.name}</TableCell>
+                            <TableCell>{shelf.total_price}</TableCell>
+                            <TableCell>
+                              {shelf.paid === 1 ? 'Paid' : 'UnPaid'}
+                            </TableCell>
+                            <TableCell>{shelf.barcode}</TableCell>
+                            <TableCell>
+                              {formatDateAndTimeString(
+                                new Date(shelf.created_at)
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {formatDateAndTimeString(
+                                new Date(shelf.expiry_date)
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {formatDateAndTimeString(
+                                new Date(shelf.checkin_time)
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {formatDateAndTimeString(
+                                new Date(shelf.checkout_time)
+                              )}
+                            </TableCell>
+                            <TableCell align='center'>
+                              <IconButton
+                                onClick={() => {
+                                  setTransferWarehouse({
+                                    ...transferWarehouse,
+                                    order_id: shelf.id,
+                                  });
+                                  setTransferModal(true);
+                                }}
+                              >
+                                <TransferWithinAStationIcon />
+                              </IconButton>
+                              <IconButton
+                                onClick={() => {
+                                  setWithdrawWarehouse({
+                                    ...withdrawWarehouse,
+                                    order_id: shelf.id,
+                                    tempQuantity: shelf.quantity,
+                                  });
+                                  console.log(shelf.quantity);
+                                  setWithdrawModal(true);
+                                }}
+                              >
+                                <UndoIcon />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </div>
             </div>
           </div>
-        </div>
+        </InnerConatiner>
       </ContentWrap>
     </Container>
   );
