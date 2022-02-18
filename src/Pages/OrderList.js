@@ -263,7 +263,11 @@ const OrderList = () => {
               </Grid>
               <Grid item xs={12}>
                 <Button
-                  disabled={signSignature.current.isEmpty() || !isAccept}
+                  disabled={
+                    (signSignature.current !== undefined &&
+                      signSignature.current?.isEmpty()) ||
+                    !isAccept
+                  }
                   onClick={() => {
                     setOpenTearmentModal(true);
                   }}
