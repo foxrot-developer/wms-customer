@@ -19,7 +19,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SideBar from '../Components/Dashboard/Sidebar/SideBar';
 import {
@@ -48,7 +48,7 @@ const OrderList = () => {
   const dispatch = useDispatch();
   const orderList = useSelector((state) => state.customer.orderList);
   const customer = useSelector((state) => state.customer.customer);
-
+  const signSignature = useRef();
   const [transferModal, setTransferModal] = useState(false);
   const [transferWarehouse, setTransferWarehouse] = useState({
     order_id: '',
@@ -68,8 +68,6 @@ const OrderList = () => {
     quantity: '',
     tempQuantity: 0,
   });
-
-  console.log(withdrawWarehouse);
 
   const formatDateAndTimeString = (date) => {
     var dd = (date.getDate() < 10 ? '0' : '') + date.getDate();
@@ -91,7 +89,11 @@ const OrderList = () => {
     }
     dispatch(getAllWarehouse());
   }, [customer]);
-
+  function convertCanvasToImage(url) {
+    let image = new Image();
+    image.src = url;
+    return image.src.replace('data:image/png;base64,', '');
+  }
   return (
     <Container>
       <Modal open={transferModal}>
@@ -238,6 +240,7 @@ const OrderList = () => {
               <Grid item xs={12}>
                 <Typography variant='h6'>{t('signature')}</Typography>
                 <SignatureCanvas
+                  ref={signSignature}
                   penColor='black'
                   canvasProps={{
                     width: 500,
@@ -261,15 +264,34 @@ const OrderList = () => {
                 <Button
                   disabled={!isAccept}
                   onClick={() => {
+                    const data = new FormData();
+                    data.append(
+                      'signature',
+                      signSignature.current
+                        .getTrimmedCanvas()
+                        .toDataURL('image/png')
+                    );
+                    data.append('quantity', withdrawWarehouse.quantity);
+                    data.append(
+                      'withdraw_date_time',
+                      withdrawWarehouse.withdraw_date_time.date +
+                        ' ' +
+                        withdrawWarehouse.withdraw_date_time.time
+                    );
+                    data.append('order_id', withdrawWarehouse.order_id);
+
                     dispatch(
                       transferWithDraw(
                         {
-                          order_id: withdrawWarehouse.order_id,
+                          signature: signSignature.current
+                            .getTrimmedCanvas()
+                            .toDataURL('image/png'),
+                          quantity: withdrawWarehouse.quantity,
                           withdraw_date_time:
                             withdrawWarehouse.withdraw_date_time.date +
                             ' ' +
                             withdrawWarehouse.withdraw_date_time.time,
-                          quantity: withdrawWarehouse.quantity,
+                          order_id: withdrawWarehouse.order_id,
                         },
                         customer.id,
                         setWithdrawModal
