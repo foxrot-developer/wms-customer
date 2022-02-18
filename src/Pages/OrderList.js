@@ -18,10 +18,10 @@ import {
   TableRow,
   TextField,
   Typography,
-} from '@mui/material';
-import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import SideBar from '../Components/Dashboard/Sidebar/SideBar';
+} from "@mui/material";
+import React, { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import SideBar from "../Components/Dashboard/Sidebar/SideBar";
 import {
   Container,
   ContentWrap,
@@ -30,18 +30,18 @@ import {
   ModalContent,
   HeaderContainer,
   InnerConatiner,
-} from '../Components/Global/GlobalStyle';
+} from "../Components/Global/GlobalStyle";
 import {
   customerOrderList,
   getAllWarehouse,
   transferProductWarehouse,
   transferWithDraw,
-} from '../Store/Customer/Actions/actionCreators';
-import CloseIcon from '@mui/icons-material/Close';
-import TransferWithinAStationIcon from '@mui/icons-material/TransferWithinAStation';
-import UndoIcon from '@mui/icons-material/Undo';
-import SignatureCanvas from 'react-signature-canvas';
-import { useTranslation } from 'react-i18next';
+} from "../Store/Customer/Actions/actionCreators";
+import CloseIcon from "@mui/icons-material/Close";
+import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
+import UndoIcon from "@mui/icons-material/Undo";
+import SignatureCanvas from "react-signature-canvas";
+import { useTranslation } from "react-i18next";
 
 const OrderList = () => {
   const { t } = useTranslation();
@@ -51,33 +51,33 @@ const OrderList = () => {
   const signSignature = useRef();
   const [transferModal, setTransferModal] = useState(false);
   const [transferWarehouse, setTransferWarehouse] = useState({
-    order_id: '',
+    order_id: "",
     transfer_date_time: {
-      date: '',
-      time: '',
+      date: "",
+      time: "",
     },
   });
 
   const [withdrawModal, setWithdrawModal] = useState(false);
   const [withdrawWarehouse, setWithdrawWarehouse] = useState({
-    order_id: '',
+    order_id: "",
     withdraw_date_time: {
-      date: '',
-      time: '',
+      date: "",
+      time: "",
     },
-    quantity: '',
+    quantity: "",
     tempQuantity: 0,
   });
 
   const formatDateAndTimeString = (date) => {
-    var dd = (date.getDate() < 10 ? '0' : '') + date.getDate();
+    var dd = (date.getDate() < 10 ? "0" : "") + date.getDate();
 
-    var MM = (date.getMonth() + 1 < 10 ? '0' : '') + (date.getMonth() + 1);
+    var MM = (date.getMonth() + 1 < 10 ? "0" : "") + (date.getMonth() + 1);
 
     return `${date.getFullYear()}-${MM}-${dd} ${
-      (date.getHours() < 10 ? '0' : '') + date.getHours()
-    }:${(date.getMinutes() < 10 ? '0' : '') + date.getMinutes()}:${
-      (date.getSeconds() < 10 ? '0' : '') + date.getSeconds()
+      (date.getHours() < 10 ? "0" : "") + date.getHours()
+    }:${(date.getMinutes() < 10 ? "0" : "") + date.getMinutes()}:${
+      (date.getSeconds() < 10 ? "0" : "") + date.getSeconds()
     }`;
   };
 
@@ -93,7 +93,7 @@ const OrderList = () => {
   function convertCanvasToImage(url) {
     let image = new Image();
     image.src = url;
-    return image.src.replace('data:image/png;base64,', '');
+    return image.src.replace("data:image/png;base64,", "");
   }
   return (
     <Container>
@@ -101,7 +101,7 @@ const OrderList = () => {
         <ModalContainer>
           <ModalContent>
             <HeaderContainer>
-              <Header>{t('transfer')}</Header>
+              <Header>{t("transfer")}</Header>
               <IconButton onClick={() => setTransferModal(false)}>
                 <CloseIcon />
               </IconButton>
@@ -109,10 +109,10 @@ const OrderList = () => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  type='date'
+                  type="date"
                   fullWidth
-                  variant='outlined'
-                  label={t('date')}
+                  variant="outlined"
+                  label={t("date")}
                   value={transferWarehouse.transfer_date_time.date}
                   onChange={(e) =>
                     setTransferWarehouse({
@@ -128,9 +128,9 @@ const OrderList = () => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  variant='outlined'
-                  label={t('time')}
-                  type='time'
+                  variant="outlined"
+                  label={t("time")}
+                  type="time"
                   value={transferWarehouse.transfer_date_time.time}
                   onChange={(e) =>
                     setTransferWarehouse({
@@ -152,17 +152,17 @@ const OrderList = () => {
                           ...transferWarehouse,
                           transfer_date_time:
                             transferWarehouse.transfer_date_time.date +
-                            ' ' +
+                            " " +
                             transferWarehouse.transfer_date_time.time,
                         },
                         customer.id,
-                        setTransferModal
-                      )
+                        setTransferModal,
+                      ),
                     );
                   }}
-                  variant='contained'
+                  variant="contained"
                 >
-                  {t('transfer')}
+                  {t("transfer")}
                 </Button>
               </Grid>
             </Grid>
@@ -171,9 +171,9 @@ const OrderList = () => {
       </Modal>
       <Modal open={withdrawModal}>
         <ModalContainer>
-          <ModalContent width='30%'>
+          <ModalContent width="30%">
             <HeaderContainer>
-              <Header>{t('Withdrawalrequest')}</Header>
+              <Header>{t("Withdrawalrequest")}</Header>
               <IconButton onClick={() => setWithdrawModal(false)}>
                 <CloseIcon />
               </IconButton>
@@ -181,10 +181,10 @@ const OrderList = () => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  type='date'
+                  type="date"
                   fullWidth
-                  variant='outlined'
-                  label={t('date')}
+                  variant="outlined"
+                  label={t("date")}
                   value={withdrawWarehouse.withdraw_date_time.date}
                   onChange={(e) =>
                     setWithdrawWarehouse({
@@ -200,9 +200,9 @@ const OrderList = () => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  variant='outlined'
-                  label={t('time')}
-                  type='time'
+                  variant="outlined"
+                  label={t("time")}
+                  type="time"
                   value={withdrawWarehouse.withdraw_date_time.time}
                   onChange={(e) =>
                     setWithdrawWarehouse({
@@ -217,9 +217,9 @@ const OrderList = () => {
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth>
-                  <InputLabel htmlFor='quantity'>{t('quantity')}</InputLabel>
+                  <InputLabel htmlFor="quantity">{t("quantity")}</InputLabel>
                   <Select
-                    id='quantity'
+                    id="quantity"
                     onChange={(e) => {
                       setWithdrawWarehouse({
                         ...withdrawWarehouse,
@@ -239,14 +239,14 @@ const OrderList = () => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant='h6'>{t('signature')}</Typography>
+                <Typography variant="h6">{t("signature")}</Typography>
                 <SignatureCanvas
                   ref={signSignature}
-                  penColor='black'
+                  penColor="black"
                   canvasProps={{
                     width: 500,
                     height: 200,
-                    className: 'sigCanvas',
+                    className: "sigCanvas",
                   }}
                 />
               </Grid>
@@ -258,34 +258,18 @@ const OrderList = () => {
                       onChange={(e) => setIsAccept(e.target.checked)}
                     />
                   }
-                  label={t('termsconditions')}
+                  label={t("termsconditions")}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Button
-                  disabled={!isAccept && !signSignature.current}
+                  disabled={!isAccept && signSignature.current !== undefined}
                   onClick={() => {
-                    /*  dispatch(
-                      transferWithDraw(
-                        {
-                          signature: signSignature.current
-                            .getTrimmedCanvas()
-                            .toDataURL('image/png'),
-                          quantity: withdrawWarehouse.quantity,
-                          withdraw_date_time:
-                            withdrawWarehouse.withdraw_date_time.date +
-                            ' ' +
-                            withdrawWarehouse.withdraw_date_time.time,
-                          order_id: withdrawWarehouse.order_id,
-                        },
-                        customer.id,
-                        setWithdrawModal
-                      )*/
                     setOpenTearmentModal(true);
                   }}
-                  variant='contained'
+                  variant="contained"
                 >
-                  {t('withdrawal')}
+                  {t("withdrawal")}
                 </Button>
               </Grid>
             </Grid>
@@ -294,15 +278,21 @@ const OrderList = () => {
       </Modal>
       <Modal open={opentearmentModal}>
         <ModalContainer>
-          <ModalContent width='30%'>
+          <ModalContent width="30%">
             <HeaderContainer>
-              <Header>{t('tearment')}</Header>
+              <Header>{t("tearment")}</Header>
               <IconButton onClick={() => setOpenTearmentModal(false)}>
                 <CloseIcon />
               </IconButton>
             </HeaderContainer>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid
+                sx={{
+                  Height: "70%",
+                }}
+                item
+                xs={12}
+              >
                 <p>
                   شروط وأحكام النقل عند طلب خدمات SLD EXPRESS ، فإنك ، بصفتك
                   "صاحب الشحنة" ، توافق ، نیابة عنك ونیابة عن مستلم الشحنة
@@ -652,6 +642,33 @@ const OrderList = () => {
                   في تاریخ توقیع عقد الخدمة.
                 </p>
               </Grid>
+              <Grid item xs={12}>
+                <button
+                  onClick={() => {
+                    dispatch(
+                      transferWithDraw(
+                        {
+                          signature: signSignature.current
+                            .getTrimmedCanvas()
+                            .toDataURL("image/png"),
+                          quantity: withdrawWarehouse.quantity,
+                          withdraw_date_time:
+                            withdrawWarehouse.withdraw_date_time.date +
+                            " " +
+                            withdrawWarehouse.withdraw_date_time.time,
+                          order_id: withdrawWarehouse.order_id,
+                        },
+                        customer.id,
+                        setWithdrawModal,
+                      ),
+                    );
+                  }}
+                  type="submit"
+                  className="btn btn-primary"
+                >
+                  {t("done")}
+                </button>
+              </Grid>
             </Grid>
           </ModalContent>
         </ModalContainer>
@@ -659,29 +676,29 @@ const OrderList = () => {
       <ContentWrap>
         <SideBar />
         <InnerConatiner>
-          <div className='container p-md-5 '>
-            <div className='row'>
-              <div className='col-12'>
-                <Header>{t('orderList')}</Header>
+          <div className="container p-md-5 ">
+            <div className="row">
+              <div className="col-12">
+                <Header>{t("orderList")}</Header>
                 <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 450 }} aria-label='simple table'>
+                  <Table sx={{ minWidth: 450 }} aria-label="simple table">
                     <TableHead>
                       <TableRow>
                         <TableCell width={50}>#</TableCell>
-                        <TableCell width={50}>{t('productName')}</TableCell>
-                        <TableCell width={50}>{t('shelfNumber')}</TableCell>
-                        <TableCell width={50}>{t('storageType')}</TableCell>
-                        <TableCell width={50}>{t('quantity')}</TableCell>
-                        <TableCell width={50}>{t('customerName')}</TableCell>
-                        <TableCell width={50}>{t('totalprice')}</TableCell>
-                        <TableCell width={50}>{t('Pay')}</TableCell>
-                        <TableCell width={50}>{t('barcode')}</TableCell>
-                        <TableCell width={50}>{t('createdAt')}</TableCell>
-                        <TableCell width={50}>{t('ExpiryDate')}</TableCell>
-                        <TableCell width={50}>{t('checkedInTime')}</TableCell>
-                        <TableCell width={50}>{t('checkOutTime')}</TableCell>
-                        <TableCell align='center' width={50}>
-                          {t('action')}
+                        <TableCell width={50}>{t("productName")}</TableCell>
+                        <TableCell width={50}>{t("shelfNumber")}</TableCell>
+                        <TableCell width={50}>{t("storageType")}</TableCell>
+                        <TableCell width={50}>{t("quantity")}</TableCell>
+                        <TableCell width={50}>{t("customerName")}</TableCell>
+                        <TableCell width={50}>{t("totalprice")}</TableCell>
+                        <TableCell width={50}>{t("Pay")}</TableCell>
+                        <TableCell width={50}>{t("barcode")}</TableCell>
+                        <TableCell width={50}>{t("createdAt")}</TableCell>
+                        <TableCell width={50}>{t("ExpiryDate")}</TableCell>
+                        <TableCell width={50}>{t("checkedInTime")}</TableCell>
+                        <TableCell width={50}>{t("checkOutTime")}</TableCell>
+                        <TableCell align="center" width={50}>
+                          {t("action")}
                         </TableCell>
                       </TableRow>
                     </TableHead>
@@ -691,10 +708,10 @@ const OrderList = () => {
                           <TableRow
                             key={index}
                             sx={{
-                              '&:last-child td, &:last-child th': { border: 0 },
+                              "&:last-child td, &:last-child th": { border: 0 },
                             }}
                           >
-                            <TableCell component='th' scope='row'>
+                            <TableCell component="th" scope="row">
                               {index + 1}
                             </TableCell>
                             <TableCell>{shelf.product_name}</TableCell>
@@ -704,30 +721,30 @@ const OrderList = () => {
                             <TableCell>{customer.name}</TableCell>
                             <TableCell>{shelf.total_price}</TableCell>
                             <TableCell>
-                              {shelf.paid === 1 ? 'Paid' : 'UnPaid'}
+                              {shelf.paid === 1 ? "Paid" : "UnPaid"}
                             </TableCell>
                             <TableCell>{shelf.barcode}</TableCell>
                             <TableCell>
                               {formatDateAndTimeString(
-                                new Date(shelf.created_at)
+                                new Date(shelf.created_at),
                               )}
                             </TableCell>
                             <TableCell>
                               {formatDateAndTimeString(
-                                new Date(shelf.expiry_date)
+                                new Date(shelf.expiry_date),
                               )}
                             </TableCell>
                             <TableCell>
                               {formatDateAndTimeString(
-                                new Date(shelf.checkin_time)
+                                new Date(shelf.checkin_time),
                               )}
                             </TableCell>
                             <TableCell>
                               {formatDateAndTimeString(
-                                new Date(shelf.checkout_time)
+                                new Date(shelf.checkout_time),
                               )}
                             </TableCell>
-                            <TableCell align='center'>
+                            <TableCell align="center">
                               <IconButton
                                 onClick={() => {
                                   setTransferWarehouse({
