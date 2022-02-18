@@ -263,7 +263,7 @@ const OrderList = () => {
               </Grid>
               <Grid item xs={12}>
                 <Button
-                  disabled={!isAccept && signSignature.current !== undefined}
+                  disabled={signSignature.current.isEmpty() || !isAccept}
                   onClick={() => {
                     setOpenTearmentModal(true);
                   }}
@@ -280,7 +280,7 @@ const OrderList = () => {
         <ModalContainer>
           <ModalContent width="30%">
             <HeaderContainer>
-              <Header>{t("tearment")}</Header>
+              <Header>{t("termsconditions")}</Header>
               <IconButton onClick={() => setOpenTearmentModal(false)}>
                 <CloseIcon />
               </IconButton>
@@ -288,7 +288,7 @@ const OrderList = () => {
             <Grid container spacing={2}>
               <Grid
                 sx={{
-                  Height: "70%",
+                  Height: "50vh",
                 }}
                 item
                 xs={12}
@@ -643,7 +643,7 @@ const OrderList = () => {
                 </p>
               </Grid>
               <Grid item xs={12}>
-                <button
+                <Button
                   onClick={() => {
                     dispatch(
                       transferWithDraw(
@@ -660,14 +660,15 @@ const OrderList = () => {
                         },
                         customer.id,
                         setWithdrawModal,
+                        setOpenTearmentModal,
                       ),
                     );
                   }}
                   type="submit"
-                  className="btn btn-primary"
+                  variant="contained"
                 >
                   {t("done")}
-                </button>
+                </Button>
               </Grid>
             </Grid>
           </ModalContent>
