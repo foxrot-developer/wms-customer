@@ -669,6 +669,7 @@ const OrderList = () => {
                       <TableRow>
                         <TableCell width={50}>#</TableCell>
                         <TableCell width={50}>{t('productName')}</TableCell>
+                        <TableCell width={50}>{t('img')}</TableCell>
                         <TableCell width={50}>{t('shelfNumber')}</TableCell>
                         <TableCell width={50}>{t('storageType')}</TableCell>
                         <TableCell width={50}>{t('quantity')}</TableCell>
@@ -698,6 +699,15 @@ const OrderList = () => {
                               {index + 1}
                             </TableCell>
                             <TableCell>{shelf.product_name}</TableCell>
+                            <TableCell>
+                              <img
+                                src={
+                                  'https://wmsss.herokuapp.com/' + shelf.image
+                                }
+                                alt='product'
+                                width='150px'
+                              />
+                            </TableCell>
                             <TableCell>{shelf.shelf_number}</TableCell>
                             <TableCell>{shelf.storage_type}</TableCell>
                             <TableCell>{shelf.quantity}</TableCell>
