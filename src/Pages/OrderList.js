@@ -263,24 +263,12 @@ const OrderList = () => {
               </Grid>
               <Grid item xs={12}>
                 <Button
-                  disabled={!isAccept && !signSignature.current}
+                  disabled={
+                    (signSignature.current !== undefined &&
+                      signSignature.current?.isEmpty()) ||
+                    !isAccept
+                  }
                   onClick={() => {
-                    /*  dispatch(
-                      transferWithDraw(
-                        {
-                          signature: signSignature.current
-                            .getTrimmedCanvas()
-                            .toDataURL('image/png'),
-                          quantity: withdrawWarehouse.quantity,
-                          withdraw_date_time:
-                            withdrawWarehouse.withdraw_date_time.date +
-                            ' ' +
-                            withdrawWarehouse.withdraw_date_time.time,
-                          order_id: withdrawWarehouse.order_id,
-                        },
-                        customer.id,
-                        setWithdrawModal
-                      )*/
                     setOpenTearmentModal(true);
                   }}
                   variant='contained'
@@ -296,13 +284,19 @@ const OrderList = () => {
         <ModalContainer>
           <ModalContent width='30%'>
             <HeaderContainer>
-              <Header>{t('tearment')}</Header>
+              <Header>{t('termsconditions')}</Header>
               <IconButton onClick={() => setOpenTearmentModal(false)}>
                 <CloseIcon />
               </IconButton>
             </HeaderContainer>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid
+                sx={{
+                  Height: '50vh',
+                }}
+                item
+                xs={12}
+              >
                 <p>
                   شروط وأحكام النقل عند طلب خدمات SLD EXPRESS ، فإنك ، بصفتك
                   "صاحب الشحنة" ، توافق ، نیابة عنك ونیابة عن مستلم الشحنة
@@ -651,6 +645,34 @@ const OrderList = () => {
                   دون سابق إنذار. ل. تلتزم SLD EXPRESS بالشروط والأحكام الساریة
                   في تاریخ توقیع عقد الخدمة.
                 </p>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  onClick={() => {
+                    dispatch(
+                      transferWithDraw(
+                        {
+                          signature: signSignature.current
+                            .getTrimmedCanvas()
+                            .toDataURL('image/png'),
+                          quantity: withdrawWarehouse.quantity,
+                          withdraw_date_time:
+                            withdrawWarehouse.withdraw_date_time.date +
+                            ' ' +
+                            withdrawWarehouse.withdraw_date_time.time,
+                          order_id: withdrawWarehouse.order_id,
+                        },
+                        customer.id,
+                        setWithdrawModal,
+                        setOpenTearmentModal
+                      )
+                    );
+                  }}
+                  type='submit'
+                  variant='contained'
+                >
+                  {t('done')}
+                </Button>
               </Grid>
             </Grid>
           </ModalContent>
