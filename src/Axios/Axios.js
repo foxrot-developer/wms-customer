@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const Axios = axios.create({
-  baseURL: 'https://wmsss.herokuapp.com/api/',
+  baseURL: 'http://backend.sld.center/api/',
 });
 
 Axios.interceptors.request.use((request) => {
