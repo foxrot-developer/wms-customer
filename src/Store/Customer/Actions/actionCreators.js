@@ -20,10 +20,6 @@ export const customerLogin = (data, navigate) => (dispatch) => {
 export const customerRegistration = (data, navigate) => (dispatch) => {
   Axios.post('user/signup', data)
     .then((response) => {
-      dispatch({
-        type: actionTypes.CUSTOMER_LOGIN,
-        payload: response.data.user,
-      });
       navigate('/');
       Toast.success(response.data.message);
     })
