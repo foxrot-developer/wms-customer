@@ -1,15 +1,30 @@
-import * as actionTypes from "./actionTypes";
-import Axios from "../../../Axios/Axios";
-import Toast from "../../../Shared/Toast/Toast";
+import * as actionTypes from './actionTypes';
+import Axios from '../../../Axios/Axios';
+import Toast from '../../../Shared/Toast/Toast';
 
 export const customerLogin = (data, navigate) => (dispatch) => {
-  Axios.post("user/login", data)
+  Axios.post('user/login', data)
     .then((response) => {
       dispatch({
         type: actionTypes.CUSTOMER_LOGIN,
         payload: response.data.user,
       });
-      navigate("/dashboard");
+      navigate('/dashboard');
+      Toast.success(response.data.message);
+    })
+    .catch((error) => {
+      console.log(error);
+      Toast.error(error.response.data.message);
+    });
+};
+export const customerRegistration = (data, navigate) => (dispatch) => {
+  Axios.post('user/signup', data)
+    .then((response) => {
+      dispatch({
+        type: actionTypes.CUSTOMER_LOGIN,
+        payload: response.data.user,
+      });
+      navigate('/');
       Toast.success(response.data.message);
     })
     .catch((error) => {
@@ -22,7 +37,7 @@ export const customerLogout = (navigate) => (dispatch) => {
   dispatch({
     type: actionTypes.CUSTOMER_LOGOUT,
   });
-  navigate("/");
+  navigate('/');
 };
 
 export const customerOrderList = (userId) => (dispatch) => {
@@ -42,7 +57,7 @@ export const customerOrderList = (userId) => (dispatch) => {
 
 export const transferProductWarehouse =
   (data, id, setTransferModal) => (dispatch) => {
-    Axios.post("warehouse/request", data)
+    Axios.post('warehouse/request', data)
       .then((response) => {
         Toast.success(response.data.message);
         dispatch(customerOrderList(id));
@@ -56,7 +71,7 @@ export const transferProductWarehouse =
 
 export const transferWithDraw =
   (data, id, setTransferModal, setOpenTearmentModal) => (dispatch) => {
-    Axios.post("product/withdraw-request", data)
+    Axios.post('product/withdraw-request', data)
       .then((response) => {
         Toast.success(response.data.message);
         dispatch(customerOrderList(id));
@@ -86,7 +101,7 @@ export const customerExpiredList = (userId) => (dispatch) => {
 };
 
 export const getAllWarehouse = () => (dispatch) => {
-  Axios.get("warehouse/all-warehouses")
+  Axios.get('warehouse/all-warehouses')
     .then((res) => {
       dispatch({
         type: actionTypes.GET_ALL_WAREHOUSE,
@@ -98,15 +113,15 @@ export const getAllWarehouse = () => (dispatch) => {
     });
 };
 function formatDateToString(date) {
-  var dd = (date.getDate() < 10 ? "0" : "") + date.getDate();
+  var dd = (date.getDate() < 10 ? '0' : '') + date.getDate();
 
-  var MM = (date.getMonth() + 1 < 10 ? "0" : "") + (date.getMonth() + 1);
+  var MM = (date.getMonth() + 1 < 10 ? '0' : '') + (date.getMonth() + 1);
 
   return `${date.getFullYear()}-${MM}-${dd}`;
 }
 
 export const getCustomerInvoice = (id) => (dispatch) => {
-  Axios.post("product/calculate-price", {
+  Axios.post('product/calculate-price', {
     customer_id: id,
   })
     .then((response) => {
